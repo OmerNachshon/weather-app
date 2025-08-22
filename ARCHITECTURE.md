@@ -5,7 +5,7 @@
 The application has been refactored to follow Flask best practices with a modular, scalable architecture:
 
 ```
-aztek-app/
+weather-app/
 ├── app.py                 # Application factory
 ├── run.py                 # Application entry point
 ├── config.py              # Configuration management

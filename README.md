@@ -1,4 +1,4 @@
-# aztek-weather-app
+# weather-app
 
 <img width="894" height="722" alt="Screenshot 2025-08-19 105721" src="https://github.com/user-attachments/assets/4cbc6a77-5ecf-43b7-b954-98809844579d" />
 
