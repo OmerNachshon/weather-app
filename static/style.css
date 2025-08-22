@@ -224,18 +224,19 @@ body {
 /* Forecast Grid */
 .forecast-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
     margin-bottom: 2rem;
 }
 
 .forecast-item {
     background: var(--light-color);
     border-radius: 8px;
-    padding: 1.5rem;
+    padding: 1rem;
     text-align: center;
     border: 1px solid var(--border-color);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 0; /* Allow items to shrink */
 }
 
 .forecast-item:hover {
@@ -244,16 +245,16 @@ body {
 }
 
 .forecast-date {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     color: #6b7280;
     margin-bottom: 0.5rem;
     font-weight: 500;
 }
 
 .forecast-icon img {
-    width: 64px;
-    height: 64px;
-    margin: 0.5rem 0;
+    width: 48px;
+    height: 48px;
+    margin: 0.25rem 0;
 }
 
 .forecast-temp {
@@ -263,15 +264,69 @@ body {
     margin: 0.5rem 0;
 }
 
+/* Temperature Range Styling */
+.forecast-temp-range {
+    margin: 0.25rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.temp-high {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #dc2626; /* Red for high temp */
+    position: relative;
+}
+
+.temp-low {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2563eb; /* Blue for low temp */
+    position: relative;
+}
+
+/* Removed emoji icons for cleaner look */
+
+.temp-high::after {
+    content: '/';
+    color: #9ca3af;
+    font-weight: 400;
+    margin: 0 0.2rem;
+}
+
+/* Responsive temperature range */
+@media (max-width: 768px) {
+    .temp-high, .temp-low {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .forecast-temp-range {
+        flex-direction: column;
+        gap: 0.1rem;
+    }
+    
+    .temp-high, .temp-low {
+        font-size: 0.8rem;
+    }
+    
+    .temp-high::after {
+        display: none;
+    }
+}
+
 .forecast-desc {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     color: var(--text-color);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     text-transform: capitalize;
 }
 
 .forecast-humidity {
-    font-size: 0.875rem;
+    font-size: 0.7rem;
     color: #6b7280;
     display: flex;
     align-items: center;
@@ -352,6 +407,26 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .forecast-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .forecast-item {
+        padding: 0.75rem;
+    }
+    
+    .forecast-icon img {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .temp-high, .temp-low {
+        font-size: 1rem;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
@@ -370,12 +445,29 @@ body {
     }
     
     .forecast-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0.4rem;
     }
     
     .forecast-item {
-        padding: 1rem;
+        padding: 0.5rem;
+    }
+    
+    .forecast-icon img {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .forecast-date {
+        font-size: 0.65rem;
+    }
+    
+    .forecast-desc {
+        font-size: 0.65rem;
+    }
+    
+    .forecast-humidity {
+        font-size: 0.6rem;
     }
     
     .table th,
@@ -391,7 +483,8 @@ body {
     }
     
     .forecast-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.3rem;
     }
     
     .btn {

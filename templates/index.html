@@ -58,20 +58,31 @@
         {% if forecasts %}
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-thermometer-half"></i> 5-Day Forecast for {{ city|e|title }}</h2>
+                <h2><i class="fas fa-thermometer-half"></i> 5-Day Weather Forecast for {{ city|e|title }}</h2>
             </div>
             <div class="card-body">
                 <div class="forecast-grid">
                     {% for item in forecasts %}
                     <div class="forecast-item">
-                        <div class="forecast-date">{{ item.dt_txt[:16] }}</div>
+                        <div class="forecast-date">{{ item.dt_txt[:10] }}</div>
                         <div class="forecast-icon">
                             {% if item.weather and item.weather[0].icon %}
                                 <img src="https://openweathermap.org/img/wn/{{ item.weather[0].icon }}@2x.png" 
                                      alt="{{ item.weather[0].main }}">
                             {% endif %}
                         </div>
+                        
+                        {% if item.daily_temps %}
+                        <!-- Enhanced: Show daily temperature range -->
+                        <div class="forecast-temp-range">
+                            <div class="temp-high">{{ item.daily_temps.max|round(1) }}°</div>
+                            <div class="temp-low">{{ item.daily_temps.min|round(1) }}°</div>
+                        </div>
+                        {% else %}
+                        <!-- Fallback: Show single temperature -->
                         <div class="forecast-temp">{{ item.main.temp|round(1) }}°C</div>
+                        {% endif %}
+                        
                         <div class="forecast-desc">{{ item.weather[0].description|title }}</div>
                         <div class="forecast-humidity">
                             <i class="fas fa-tint"></i> {{ item.main.humidity }}%

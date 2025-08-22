@@ -47,8 +47,52 @@ def fetch_weather_data(city, timeout=10):
             error_msg = data.get('message', 'City not found or API error')
             return None, error_msg
         
-        # Return only the first 5 forecasts
-        forecasts = data.get('list', [])[:5]
+        # Extract 5-day forecast with daily temperature ranges (min/max)
+        all_forecasts = data.get('list', [])
+        daily_data = {}
+        
+        # Group forecasts by date and collect temperature data
+        for forecast in all_forecasts:
+            date_str = forecast.get('dt_txt', '')[:10]  # Get YYYY-MM-DD part
+            temp = forecast.get('main', {}).get('temp', 0)
+            hour = int(forecast.get('dt_txt', '')[11:13])  # Extract hour
+            
+            if date_str not in daily_data:
+                daily_data[date_str] = {
+                    'temps': [],
+                    'midday_forecast': None,
+                    'forecasts': []
+                }
+            
+            daily_data[date_str]['temps'].append(temp)
+            daily_data[date_str]['forecasts'].append(forecast)
+            
+            # Use forecast closest to midday (12:00) as representative
+            if daily_data[date_str]['midday_forecast'] is None or abs(hour - 12) < abs(int(daily_data[date_str]['midday_forecast'].get('dt_txt', '')[11:13]) - 12):
+                daily_data[date_str]['midday_forecast'] = forecast
+        
+        # Create enhanced daily forecasts with min/max temperatures
+        daily_forecasts = []
+        for date_str in sorted(daily_data.keys())[:5]:  # Get first 5 days
+            day_data = daily_data[date_str]
+            base_forecast = day_data['midday_forecast'].copy()
+            
+            # Calculate min/max temperatures for the day
+            temps = day_data['temps']
+            min_temp = min(temps)
+            max_temp = max(temps)
+            
+            # Enhance the forecast with daily temperature range
+            base_forecast['daily_temps'] = {
+                'min': min_temp,
+                'max': max_temp,
+                'current': base_forecast.get('main', {}).get('temp', min_temp)
+            }
+            
+            daily_forecasts.append(base_forecast)
+        
+        # If we don't have enough daily forecasts, fallback to first 5 entries
+        forecasts = daily_forecasts if len(daily_forecasts) >= 5 else all_forecasts[:5]
         
         if not forecasts:
             return None, "No forecast data available"
