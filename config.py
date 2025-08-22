@@ -19,7 +19,7 @@ class Config:
     """Base configuration class"""
     
     # Flask Configuration
-    SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "dev-secret-key-change-in-production")
+    SECRET_KEY = os.environ.get("FLASK_SECRET_KEY")
     
     # Database Configuration
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -115,3 +115,24 @@ config = {
     'testing': TestingConfig,
     'default': DevelopmentConfig
 }
+
+
+def getConfig(flask_env=None):
+    """
+    Get the appropriate configuration class based on the Flask environment
+    
+    Args:
+        flask_env (str): Flask environment name ('development', 'production', 'testing')
+                        If None, uses FLASK_ENV environment variable or defaults to 'development'
+    
+    Returns:
+        Config: Configuration class for the specified environment
+    """
+    if flask_env is None:
+        flask_env = os.environ.get('FLASK_ENV', 'development')
+    
+    # Normalize environment name
+    flask_env = flask_env.lower()
+    
+    # Return the appropriate config class, defaulting to development if not found
+    return config.get(flask_env, config['default'])

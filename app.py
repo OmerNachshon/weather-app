@@ -3,7 +3,7 @@ Weather Forecast App - Main Application Factory
 """
 import os
 from flask import Flask
-from config import config
+from config import getConfig
 from models import db
 
 
@@ -24,8 +24,9 @@ def create_app(config_name=None):
     app = Flask(__name__)
     
     # Load configuration
-    app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
+    config_class = getConfig(config_name)
+    app.config.from_object(config_class)
+    config_class.init_app(app)
     
     # Initialize extensions
     db.init_app(app)
