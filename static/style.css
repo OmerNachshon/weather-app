@@ -1,69 +1,401 @@
+/* CSS Custom Properties */
+:root {
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --success-color: #059669;
+    --success-dark: #047857;
+    --danger-color: #dc2626;
+    --warning-color: #d97706;
+    --info-color: #0891b2;
+    --light-color: #f8fafc;
+    --dark-color: #1e293b;
+    --text-color: #374151;
+    --border-color: #e5e7eb;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background: #f7fafc;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+    color: var(--text-color);
+    line-height: 1.6;
 }
+
 .container {
-    max-width: 650px;
-    margin: 3em auto;
-    background: #fff;
-    padding: 2em 2.5em;
-    border-radius: 8px;
-    box-shadow: 0 2px 24px rgba(0,0,0,0.07);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
 }
-h1, h2 {
+
+/* Header Styles */
+.header {
     text-align: center;
-    color: #2a4365;
+    margin-bottom: 3rem;
+    color: white;
 }
-.weather-form {
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Card Styles */
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
     display: flex;
-    flex-direction: column;
-    gap: 1em;
-    margin-bottom: 2em;
+    align-items: center;
+    gap: 0.5rem;
 }
-.weather-form label {
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.form-group label i {
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.btn-success {
+    background: var(--success-color);
+    color: white;
+    margin-top: 1.5rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-success:hover {
+    background: var(--success-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    background: var(--info-color);
+    color: white;
+}
+
+.btn-sm:hover {
+    background: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+/* Alert/Flash Messages */
+.messages {
+    margin-bottom: 2rem;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+.alert-success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.alert-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.alert-close {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+}
+
+.alert-close:hover {
+    opacity: 1;
+}
+
+/* Forecast Grid */
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.forecast-item {
+    background: var(--light-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.forecast-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.forecast-date {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
     font-weight: 500;
 }
-.weather-form input {
-    padding: 0.5em;
-    border: 1px solid #cbd5e0;
-    border-radius: 4px;
-    font-size: 1em;
+
+.forecast-icon img {
+    width: 64px;
+    height: 64px;
+    margin: 0.5rem 0;
 }
-.weather-form button {
-    background: #3182ce;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 0.7em;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background 0.2s;
+
+.forecast-temp {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
 }
-.weather-form button:hover {
-    background: #2b6cb0;
+
+.forecast-desc {
+    font-size: 0.875rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
 }
-.error {
-    color: #e53e3e;
-    background: #fff5f5;
-    border: 1px solid #fed7d7;
-    padding: 1em;
-    border-radius: 4px;
-    margin-bottom: 1em;
-    text-align: center;
+
+.forecast-humidity {
+    font-size: 0.875rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
 }
-.forecast-table {
+
+/* Table Styles */
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1em;
+    background: white;
 }
-.forecast-table th, .forecast-table td {
-    border: 1px solid #cbd5e0;
-    padding: 0.7em;
+
+.table th,
+.table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table th {
+    background: var(--light-color);
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.user-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem 0;
+    color: white;
+    opacity: 0.8;
+}
+
+.text-red {
+    color: #dc2626;
+}
+
+.text-muted {
+    color: #9ca3af;
+}
+
+.text-center {
     text-align: center;
 }
-.forecast-table th {
-    background: #ebf8ff;
-    color: #2a4365;
+
+/* Timestamp in user forecasts */
+.timestamp {
+    font-size: 0.875rem;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-left: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .header p {
+        font-size: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .forecast-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .forecast-item {
+        padding: 1rem;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .forecast-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
