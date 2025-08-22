@@ -4,8 +4,7 @@ Weather Forecast App - Main Application Factory
 import os
 from flask import Flask
 from config import config
-# TEMPORARILY DISABLED - Testing startup speed
-# from models import db
+from models import db
 
 
 def create_app(config_name=None):
@@ -29,8 +28,7 @@ def create_app(config_name=None):
     config[config_name].init_app(app)
     
     # Initialize extensions
-    # TEMPORARILY DISABLED - Testing startup speed
-    # db.init_app(app)
+    db.init_app(app)
     
     # Register blueprints
     from routes import blueprints
@@ -38,15 +36,14 @@ def create_app(config_name=None):
         app.register_blueprint(blueprint, **options)
     
     # Create database tables
-    # TEMPORARILY DISABLED - Testing startup speed
-    # with app.app_context():
-    #     try:
-    #         db.create_all()
-    #         app.logger.info("✅ Database ready")
-    #     except Exception as e:
-    #         app.logger.error(f"⚠️  Database init failed: {e}")
-    
-    print("🚀 Database initialization DISABLED for startup speed testing")
+    with app.app_context():
+        try:
+            db.create_all()
+            app.logger.info("✅ Database ready")
+            print("🚀 Database initialized successfully")
+        except Exception as e:
+            app.logger.error(f"⚠️  Database init failed: {e}")
+            print(f"❌ Database initialization failed: {e}")
     
     return app
 

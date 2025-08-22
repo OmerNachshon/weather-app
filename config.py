@@ -7,6 +7,13 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# Azure PostgreSQL connection helper
+try:
+    from get_conn import get_connection_uri
+    AZURE_POSTGRES_AVAILABLE = True
+except ImportError:
+    AZURE_POSTGRES_AVAILABLE = False
+
 
 class Config:
     """Base configuration class"""
@@ -36,20 +43,48 @@ class DevelopmentConfig(Config):
     """Development configuration"""
     
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", 
-        "sqlite:///weather_dev.db"
-    )
+    
+    # Use SQLite only when FLASK_ENV is specifically set to 'development'
+    if os.environ.get('FLASK_ENV') == 'development':
+        SQLALCHEMY_DATABASE_URI = "sqlite:///weather_dev.db"
+        print("📝 Using SQLite for development (FLASK_ENV=development)")
+    elif AZURE_POSTGRES_AVAILABLE and os.environ.get('DBHOST'):
+        # Use Azure PostgreSQL with password authentication
+        try:
+            SQLALCHEMY_DATABASE_URI = get_connection_uri()
+            print("🔑 Using Azure PostgreSQL with password authentication")
+        except Exception as e:
+            print(f"❌ Azure PostgreSQL connection failed: {e}")
+            raise RuntimeError(f"Unable to connect to PostgreSQL database: {e}")
+    else:
+        # Use DATABASE_URL from environment or raise error
+        SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+        if SQLALCHEMY_DATABASE_URI:
+            print("📄 Using DATABASE_URL from environment")
+        else:
+            raise ValueError("No database configuration found. Set DBHOST/DBUSER/DBPASSWORD for PostgreSQL or DATABASE_URL, or set FLASK_ENV=development for SQLite.")
 
 
 class ProductionConfig(Config):
     """Production configuration"""
     
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL",
-        "sqlite:///weather.db"
-    )
+    
+    # Production requires Azure PostgreSQL
+    if AZURE_POSTGRES_AVAILABLE and os.environ.get('DBHOST'):
+        try:
+            SQLALCHEMY_DATABASE_URI = get_connection_uri()
+            print("🔑 Using Azure PostgreSQL with password authentication")
+        except Exception as e:
+            print(f"❌ PostgreSQL connection failed in production: {e}")
+            raise RuntimeError(f"Unable to connect to PostgreSQL database: {e}")
+    else:
+        # Use DATABASE_URL from environment (for cloud deployments like Heroku)
+        SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+        if SQLALCHEMY_DATABASE_URI:
+            print("📄 Using DATABASE_URL from environment")
+        else:
+            raise ValueError("Production requires database configuration. Set DBHOST/DBUSER/DBPASSWORD for PostgreSQL or DATABASE_URL.")
     
     @staticmethod
     def init_app(app):
