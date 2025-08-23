@@ -18,3 +18,4 @@ terraform.tfstate.backup
 
 # VSCode
 .vscode/
+.DS_Store
