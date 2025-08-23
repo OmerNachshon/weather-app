@@ -5,6 +5,7 @@ import os
 from flask import Flask
 from config import getConfig
 from models import db
+from routes import blueprints
 
 
 def create_app(config_name=None):
@@ -32,7 +33,6 @@ def create_app(config_name=None):
     db.init_app(app)
     
     # Register blueprints
-    from routes import blueprints
     for blueprint, options in blueprints:
         app.register_blueprint(blueprint, **options)
     
