@@ -8,6 +8,8 @@ env:
 on:
   push:
     branches: [ "dev" ]
+    paths-ignore:
+      - 'terraform/**'     # Don't deploy app when only terraform changes
 
 permissions:
   id-token: write
